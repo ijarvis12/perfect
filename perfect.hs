@@ -1,0 +1,33 @@
+#!/usr/bin/env ghc
+
+--program that finds perfect numbers using Mersenne Primes
+
+import Data.List
+import Control.Monad
+
+test :: Integer -> Integer
+test y = do
+    let m = map (y `mod`) [1 .. y-1]
+    let f = zip [1..] m
+    let fltr = fst (unzip (filter ((==0).snd) f))
+    sum fltr
+    
+
+perfect :: Integer -> String
+perfect x = do
+    let y = 2^(x)*(2^(x+1)-1)
+    let z = test y
+    if y == z then
+        show y
+    else []
+
+loop :: Integer -> IO ()
+loop x = do
+        print (perfect x)
+        loop (x+1)
+
+main :: IO ()
+main = do
+    putStrLn $ id "Computing perfect numbers: "
+    let x = 1 :: Integer
+    loop x
