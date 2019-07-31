@@ -1,4 +1,4 @@
-#!/usr/bin/env ghc
+#!/usr/bin/env runhaskell
 
 --program that finds perfect numbers using Mersenne Primes
 
@@ -23,8 +23,12 @@ perfect x = do
 
 loop :: Integer -> IO ()
 loop x = do
-        print (perfect x)
-        loop (x+1)
+        let perf = perfect x
+        if not (null perf) then do
+            putStrLn perf
+            loop (x+1)
+        else
+            loop (x+1)
 
 main :: IO ()
 main = do
