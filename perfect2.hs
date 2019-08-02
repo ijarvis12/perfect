@@ -8,25 +8,22 @@ import Data.List
 import Control.Monad
 import Control.Parallel
 
-test :: Integer -> Integer
-test y = do
-    let m = map (y `mod`) [1 .. y-1]
-    let f = zip [1..] m
-    let fltr = fst (unzip (filter ((==0).snd) f))
-    sum fltr
+test :: Integer -> Integer -> [Integer]
+test n p = do
+    [p `mod` n]
 
-perfect :: Integer -> IO ()
-perfect x = do
-    let y = 2^(x)*(2^(x+1)-1)
-    let z = test y
-    when (y == z) $ print y
+loop :: Integer -> IO ()
+loop x = do
+    let p = 2^(x)*(2^(x+1)-1)
+    let y = div p 2
+    let z = forM [1..y] $ \n -> test n p
+    let m = zip (head z) [1..]
+    let fltr = snd (unzip (filter ((==0).fst) m))
+    when (p == sum fltr) $ print p
+    loop (x+1)
 
 main :: IO ()
 main = do
     putStrLn $ id "Computing perfect numbers: "
-    putStrLn "Enter highest power to search to: "
-    i <- getLine
-    putStrLn " "
-    let y = read i :: Integer
     let x = 1 :: Integer
-    forM_ [x..y] $ \n -> (perfect n)
+    loop x
