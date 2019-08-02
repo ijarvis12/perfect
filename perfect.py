@@ -3,22 +3,24 @@
 # function perfect finds perfect numbers given inputs
 # inputs: numprocs: number of processes the computer has
 #             proc: process number
-#             maxn: maximum number to search to
-def perfect(numprocs,proc,maxn):
-#   setup the correct range to search within
-    for p in range(int(float(maxn*proc)/float(numprocs)),int(float(maxn*(proc+1))/float(numprocs))):
-        psum = 0
-#       the potential perfect number
-        perfect = 2**(p)*(2**(p+1)-1)
+#                p: number to see if perfect
+#      return_dict: dictionary of return values
+def perfect(numprocs,proc,p,return_dict):
+#   variable start is the starting point
+    start = p*proc//(2*numprocs)
+    if start < 1:
+        start = 1
 
-#       add up all divisors into variable psum
-        for n in range(1,perfect):
-            if perfect%n == 0:
-                psum += n
+#   variable end is the ending point
+    end = p*(proc+1)//(2*numprocs)
+    if end < 2:
+        end = 2
 
-#       if the sum of the divisors equals the potenial perfect number, we have a match
-        if psum == perfect:
-            print(perfect)
+#   add up all divisors into variable psum
+    for n in range(start,end+1):
+        if p%n == 0:
+            return_dict[n] = n
+            
 
 ##                                                           ##
 ## main process that spawns jobs to look for perfect numbers ##
@@ -38,7 +40,7 @@ if __name__ == '__main__':
     print("")
 
 #   maximum number to search to
-    maxn = input("Enter max exponent #: ")
+    maxn = input("Enter max Mersenne prime power: ")
 
 #   if maxn has input, attempt to make it an integer, else exit
     if len(maxn) > 0:
@@ -52,23 +54,38 @@ if __name__ == '__main__':
         exit()
 
 #   check to see if maxn is sane
-    if maxn < 0:
+    if maxn < 1:
         print("Bad input")
         garbage = input("Press <Enter> to end program")
         exit()
 
     print("The perfect numbers:")
 
-#   start the jobs
-    jobs = []
-    for proc in range(numprocs):
-        job = multiprocessing.Process(target=perfect, args=(numprocs,proc,maxn,))
-        jobs.append(job)
-        job.start()
-#       sleep the main process to let the job start before spawning another
-        sleep(0.1)
-#   wait for jobs to finish
-    for job in jobs:
-        job.join()
+#   shared dictionary between processes
+    return_dict = multiprocessing.Manager().dict()
+
+#   start loop to find perect numbers
+    for n in range(1,maxn):
+
+#       start the jobs
+        jobs = []
+        return_dict.clear()
+        p = 2**(n)*(2**(n+1)-1)
+        
+        for proc in range(numprocs):
+            job = multiprocessing.Process(target=perfect, args=(numprocs,proc,p,return_dict,))
+            jobs.append(job)
+            job.start()
+
+#       wait for jobs to finish
+        for job in jobs:
+            job.join()
+
+#       add up values in return_dict to see if perfect number
+        psum = 0
+        for key,value in return_dict.items():
+            psum += key
+        if psum == p:
+            print(p)
 
     garbage = input("Press <Enter> to end program")
