@@ -3,6 +3,9 @@
 ##                                     ##
 ## program that finds perfect numbers  ##
 ##                                     ##
+
+from math import sqrt
+
 print("")
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 print(" This program finds perfect numbers using Mersenne Primes ")
@@ -36,13 +39,21 @@ for p in range(1,maxn):
 #   the potential perfect number
     perfect = 2**(p)*(2**(p+1)-1)
 
+#   the limit to search to
+    sqrtp = int(sqrt(perfect))
+
 #   add up all the divisors into psum
-    for n in range(1,perfect):
+    for n in range(1,sqrtp+1):
         if perfect%n == 0:
             psum += n
+            psum += perfect//n
+
+#   get rid of possible extra summation
+    if sqrtp**2 == perfect:
+        psum -= sqrtp
 
 #   if psum is equal to the potenial perfect number, we have a match
-    if psum == perfect:
+    if psum == 2*perfect:
         print(perfect)
 
 garbage = input("Press <Enter> to end program")

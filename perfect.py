@@ -4,23 +4,24 @@
 # inputs: numprocs: number of processes the computer has
 #             proc: process number
 #                p: number to see if perfect
-#      return_dict: dictionary of return values
-def perfect(numprocs,proc,p,return_dict):
+#      return_list: list of return values
+def perfect(numprocs,proc,p,return_list):
 #   variable start is the starting point
-    start = p*proc//(2*numprocs)
+    start = int(sqrt(p))*proc//numprocs
     if start < 1:
         start = 1
 
 #   variable end is the ending point
-    end = p*(proc+1)//(2*numprocs)
+    end = int(sqrt(p))*(proc+1)//numprocs
     if end < 2:
         end = 2
 
 #   add up all divisors into variable psum
     for n in range(start,end+1):
         if p%n == 0:
-            return_dict[n] = n
-            
+            return_list.append(n)
+            return_list.append(p//n)
+
 
 ##                                                           ##
 ## main process that spawns jobs to look for perfect numbers ##
@@ -28,7 +29,7 @@ def perfect(numprocs,proc,p,return_dict):
 if __name__ == '__main__':
 
     import multiprocessing
-    from time import sleep
+    from math import sqrt
 
 #   variable that holds the number of processes the computer has
     numprocs = multiprocessing.cpu_count()
@@ -54,26 +55,29 @@ if __name__ == '__main__':
         exit()
 
 #   check to see if maxn is sane
-    if maxn < 1:
+    if maxn < 3:
         print("Bad input")
         garbage = input("Press <Enter> to end program")
         exit()
 
     print("The perfect numbers:")
 
-#   shared dictionary between processes
-    return_dict = multiprocessing.Manager().dict()
+#   print the first perfect number (too hard to get the program to compute on its own)
+    print(6)
 
 #   start loop to find perect numbers
-    for n in range(1,maxn):
+    for n in range(2,maxn):
+
+#       jobs list
+        jobs = []
+#       shared dictionary between processes
+        return_list = multiprocessing.Manager().list()
+#       the perfect number
+        p = 2**(n)*(2**(n+1)-1)
 
 #       start the jobs
-        jobs = []
-        return_dict.clear()
-        p = 2**(n)*(2**(n+1)-1)
-        
         for proc in range(numprocs):
-            job = multiprocessing.Process(target=perfect, args=(numprocs,proc,p,return_dict,))
+            job = multiprocessing.Process(target=perfect, args=(numprocs,proc,p,return_list,))
             jobs.append(job)
             job.start()
 
@@ -83,9 +87,9 @@ if __name__ == '__main__':
 
 #       add up values in return_dict to see if perfect number
         psum = 0
-        for key,value in return_dict.items():
-            psum += key
-        if psum == p:
+        for l in return_list:
+            psum += l
+        if psum == p*2:
             print(p)
 
     garbage = input("Press <Enter> to end program")
