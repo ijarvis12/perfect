@@ -70,8 +70,10 @@ if __name__ == '__main__':
 
 #       jobs list
         jobs = []
-#       shared dictionary between processes
+        
+#       shared list between processes
         return_list = multiprocessing.Manager().list()
+        
 #       the perfect number
         p = 2**(n)*(2**(n+1)-1)
 
