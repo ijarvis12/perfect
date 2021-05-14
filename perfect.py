@@ -18,7 +18,7 @@ def perfect(numprocs,proc,p,return_list):
 
 #   add up all divisors into variable psum
     for n in range(start,end+1):
-        if p%n == 0:
+        if p % n == 0:
             return_list.append(n)
             return_list.append(p//n)
 
