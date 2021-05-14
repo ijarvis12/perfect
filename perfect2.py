@@ -44,9 +44,9 @@ for p in range(1,maxn):
 
 #   add up all the divisors into psum
     for n in range(1,sqrtp+1):
-        if perfect%n == 0:
+        if perfect % n == 0:
             psum += n
-            psum += perfect//n
+            psum += perfect // n
 
 #   get rid of possible extra summation
     if sqrtp**2 == perfect:
