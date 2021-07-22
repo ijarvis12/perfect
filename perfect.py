@@ -49,7 +49,7 @@ if __name__ == '__main__':
             maxn = int(maxn)
         except:
             print("Bad input")
-            garbage = input("Press <Enter> to end program")
+            _ = input("Press <Enter> to end program")
             exit()
     else:
         exit()
@@ -57,7 +57,7 @@ if __name__ == '__main__':
 #   check to see if maxn is sane
     if maxn < 3:
         print("Bad input")
-        garbage = input("Press <Enter> to end program")
+        _ = input("Press <Enter> to end program")
         exit()
 
     print("The perfect numbers:")
@@ -87,11 +87,11 @@ if __name__ == '__main__':
         for job in jobs:
             job.join()
 
-#       add up values in return_dict to see if perfect number
+#       add up values in return_list to see if perfect number
         psum = 0
         for l in return_list:
             psum += l
         if psum == p*2:
             print(p)
 
-    garbage = input("Press <Enter> to end program")
+    _ = input("Press <Enter> to end program")
