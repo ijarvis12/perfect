@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # function perfect finds perfect numbers given inputs
 # inputs: numprocs: number of processes the computer has
@@ -17,7 +17,7 @@ def perfect(numprocs,proc,p,return_list):
         end = 2
 
 #   add up all divisors into variable psum
-    for n in range(start,end+1):
+    for n in range(start,end):
         if p % n == 0:
             return_list.append(n)
             return_list.append(p//n)
@@ -55,18 +55,19 @@ if __name__ == '__main__':
         exit()
 
 #   check to see if maxn is sane
-    if maxn < 3:
-        print("Bad input")
+    if maxn < 4:
+        print("Need at least a power of 4")
         _ = input("Press <Enter> to end program")
         exit()
 
     print("The perfect numbers:")
 
-#   print the first perfect number (too hard to get the program to compute on its own)
+#   print the first two perfect numbers (too hard to get the program to compute on its own)
     print(6)
+    print(28)
 
 #   start loop to find perect numbers
-    for n in range(2,maxn):
+    for n in range(3,maxn):
 
 #       jobs list
         jobs = []
