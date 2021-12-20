@@ -7,7 +7,7 @@ import Control.Monad
 
 test :: Integer -> Integer
 test y = do
-    let m = map (y `mod`) [1 .. y-1]
+    let m = map (y `mod`) [1 .. (div y 2)]
     let f = zip [1..] m
     let fltr = fst (unzip (filter ((==0).snd) f))
     sum fltr
