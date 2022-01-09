@@ -2,9 +2,6 @@
 
 --program that finds perfect numbers using Mersenne Primes
 
-import Data.List
-import Control.Monad
-
 test :: Integer -> Integer
 test y = do
     let m = map (y `mod`) [1 .. (div y 2)]
