@@ -29,6 +29,6 @@ loop x = do
 
 main :: IO ()
 main = do
-    putStrLn $ id "Computing perfect numbers: "
+    putStrLn "Computing perfect numbers: "
     let x = 1 :: Integer
     loop x
