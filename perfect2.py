@@ -21,14 +21,15 @@ if len(maxn) > 0:
         maxn = int(maxn)
     except:
         print("Bad input")
-        garbage = input("Press <Enter> to end program")
+        _ = input("Press <Enter> to end program")
+        exit()
 else:
     exit()
 
 # check if maxn is sane
 if maxn <= 1:
     print("Bad input")
-    garbage = input("Press <Enter> to end program")
+    _ = input("Press <Enter> to end program")
     exit()
 
 print("The perfect numbers:")
@@ -56,4 +57,4 @@ for p in range(1,maxn):
     if psum == 2*perfect:
         print(perfect)
 
-garbage = input("Press <Enter> to end program")
+_ = input("Press <Enter> to end program")
