@@ -16,11 +16,12 @@ def perfect(numprocs,proc,p,return_list):
     if end < 2:
         end = 2
 
-#   add up all divisors into variable psum
+#   add all divisors into return variable
     for n in range(start,end):
         if p % n == 0:
             return_list.append(n)
             return_list.append(p//n)
+    return
 
 
 ##                                                           ##
