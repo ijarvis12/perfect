@@ -1,3 +1,5 @@
+#!/usr/bin/env dart
+
 /*
  * program that finds perfect numbers
 */
