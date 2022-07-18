@@ -20,6 +20,23 @@ bool LLT(int p) {
         return true;
 }
 
+BigInt NewtonSqrt(BigInt perfect) {
+        double? root;
+        double x = perfect / BigInt.two;
+        double n = x;
+        while(true) {
+                root = 0.5 * (x + (n / x));
+                if((root - x) > 0 && (root - x) < 1) {
+                        break;
+                }
+                else if((root - x) < 0 && (root - x) > -1) {
+                        break;
+                }
+                x = root;
+        }
+        return (BigInt.from(root) + BigInt.two); 
+}
+
 void main() {
         print("");
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -29,6 +46,10 @@ void main() {
 
         print("The perfect numbers:");
         print(6);
+
+        // prime sieve list
+        //List<BigInt> primes = [BigInt.one];
+        //BigInt? pri;
 
         // find the perfect numbers
         for(int p = 3;; p+=2) {
@@ -43,14 +64,27 @@ void main() {
                 // the potential perfect number
                 BigInt perfect = BigInt.two.pow(p-1)*(BigInt.two.pow(p) - BigInt.one);
 
-                // stop is the stopping point
-                // cant use sqrt because not implemented for BigInt
-                BigInt stop = BigInt.from(perfect / BigInt.two) + BigInt.one;
+                // use Newton's method for sqrt for stopping point
+                BigInt stop = NewtonSqrt(perfect);
+
+                // prime sieve list
+                /*for(int i = 0; i < primes.length; i++) {
+                        pri = primes[i];
+                        if(perfect % pri == 0) {
+                                psum = psum + pri;
+                                psum = psum + BigInt.from(perfect / pri);
+                        }
+                }*/
+
+                // starting point
+                //BigInt start = primes.last + BigInt.one;
 
                 // add up all the divisors into psum
                 for(BigInt n = BigInt.one; n < stop; n = n + BigInt.one) {
                         if(perfect % n == BigInt.zero) {
+                                //primes.add(n);
                                 psum = psum + n;
+                                psum = psum + BigInt.from(perfect / n);
                         }
                 }
 
@@ -59,7 +93,7 @@ void main() {
                 }
 
                 // if psum is equal to the potenial perfect number, we have a match
-                if(psum == perfect) {
+                if(psum == BigInt.two*perfect) {
                         print(perfect);
                 }
         }
