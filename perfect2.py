@@ -12,33 +12,31 @@ print(" This program finds perfect numbers using Mersenne Primes ")
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 print("")
 
-# variable maxn is the maximum number to search to
-maxn = input("Enter max exponent #: ")
-
-# if maxn exists, attempt to make it an integer, else exit
-if len(maxn) > 0:
-    try:
-        maxn = int(maxn)
-    except:
-        print("Bad input")
-        _ = input("Press <Enter> to end program")
-        exit()
-else:
-    exit()
-
-# check if maxn is sane
-if maxn <= 1:
-    print("Bad input")
-    _ = input("Press <Enter> to end program")
-    exit()
+# Lucas-Lehmer prime test for odd p > 2
+def LLT(p):
+    s = 4
+    M = 2**p - 1
+    for n in range(0,p-2):
+        s = ((s * s) - 2) % M;
+        if(s == 0):
+            return False
+    return True
 
 print("The perfect numbers:")
+print(6)
 
 # find the perfect numbers
-for p in range(1,maxn):
+p = 1
+while True:
+    p += 2
     psum = 0
+
+#   LLT check
+    if LLT(p):
+        continue
+
 #   the potential perfect number
-    perfect = 2**(p)*(2**(p+1)-1)
+    perfect = 2**(p-1)*(2**(p)-1)
 
 #   the limit to search to
     sqrtp = int(sqrt(perfect))
@@ -56,5 +54,3 @@ for p in range(1,maxn):
 #   if psum is equal to the potenial perfect number, we have a match
     if psum == 2*perfect:
         print(perfect)
-
-_ = input("Press <Enter> to end program")
