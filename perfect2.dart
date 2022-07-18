@@ -47,10 +47,6 @@ void main() {
         print("The perfect numbers:");
         print(6);
 
-        // prime sieve list
-        //List<BigInt> primes = [BigInt.one];
-        //BigInt? pri;
-
         // find the perfect numbers
         for(int p = 3;; p+=2) {
 
@@ -67,22 +63,9 @@ void main() {
                 // use Newton's method for sqrt for stopping point
                 BigInt stop = NewtonSqrt(perfect);
 
-                // prime sieve list
-                /*for(int i = 0; i < primes.length; i++) {
-                        pri = primes[i];
-                        if(perfect % pri == 0) {
-                                psum = psum + pri;
-                                psum = psum + BigInt.from(perfect / pri);
-                        }
-                }*/
-
-                // starting point
-                //BigInt start = primes.last + BigInt.one;
-
                 // add up all the divisors into psum
                 for(BigInt n = BigInt.one; n < stop; n = n + BigInt.one) {
                         if(perfect % n == BigInt.zero) {
-                                //primes.add(n);
                                 psum = psum + n;
                                 psum = psum + BigInt.from(perfect / n);
                         }
