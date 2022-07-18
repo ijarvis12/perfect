@@ -4,26 +4,39 @@
 --program that finds perfect numbers using Mersenne Primes
 --multiprocessed
 
-import Data.List
 import Control.Monad
 import Control.Parallel
 
+
 test :: Integer -> Integer -> [Integer]
-test n p = do
-    [p `mod` n]
+test n p = [p `mod` n]
+
+llt :: Integer -> Integer -> Integer -> Bool
+llt i s x = do
+    if i == (x-2) then
+        True
+    else do
+        let m = 2^x - 1
+        let y = ((s*s)-2) `mod` m
+        if y == 0 then
+            False
+        else
+            llt (i+1) y x
 
 loop :: Integer -> IO ()
 loop x = do
-    let p = 2^(x)*(2^(x+1)-1)
-    let y = div p 2
+    when (llt 0 4 x) $ loop (x+2)
+    let p = 2^(x-1)*(2^(x)-1)
+    let y = (div p 2) + 2  :: Integer
     let z = forM [1..y] $ \n -> test n p
     let m = zip (head z) [1..]
     let fltr = snd (unzip (filter ((==0).fst) m))
     when (p == sum fltr) $ print p
-    loop (x+1)
+    loop (x+2)
 
 main :: IO ()
 main = do
     putStrLn $ id "Computing perfect numbers: "
-    let x = 1 :: Integer
-    loop x
+    print 6
+    print 28
+    loop 5
