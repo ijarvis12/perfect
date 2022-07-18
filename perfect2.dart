@@ -5,11 +5,8 @@
 import 'dart:math';
 import 'dart:io';
 
-// Lucas-Lehmer prime test for odd p
+// Lucas-Lehmer prime test for odd p > 2
 bool LLT(int p) {
-        if(p == 1) {
-                return true;
-        }
         BigInt s = BigInt.two + BigInt.two;
         BigInt M = BigInt.two.pow(p) - BigInt.one;
         for(int n = 0; n < p-2; n += 1) {
