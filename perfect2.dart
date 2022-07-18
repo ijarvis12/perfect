@@ -5,6 +5,22 @@
 import 'dart:math';
 import 'dart:io';
 
+// Lucas-Lehmer prime test for odd p
+bool LLT(int p) {
+        if(p == 1) {
+                return true;
+        }
+        BigInt s = BigInt.two + BigInt.two;
+        BigInt M = BigInt.two.pow(p) - BigInt.one;
+        for(int n = 0; n < p-2; n += 1) {
+                s = ((s * s) - BigInt.two) % M;
+                if(s == BigInt.zero) {
+                        return false;
+                }
+        }
+        return true;
+}
+
 void main() {
         print("");
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -12,34 +28,21 @@ void main() {
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         print("");
 
-        // variable maxn is the maximum number to search to
-        print("Enter max exponent #: ");
-        int? maxn = int.tryParse(stdin.readLineSync()!);
-
-        // if maxn exists, attempt to make it an integer, else exit
-        if(maxn == null) {
-                print("Bad input");
-                print("Press <Enter> to end program");
-                String? _ = stdin.readLineSync()!;
-                return;
-        }
-
-        // check if maxn is sane
-        if(maxn <= 1) {
-                print("Bad input");
-                print("Press <Enter> to end program");
-                String? _ = stdin.readLineSync()!;
-                return;
-        }
-
         print("The perfect numbers:");
+        print(6);
 
         // find the perfect numbers
-        for(int p = 1; p < maxn; p++) {
+        for(int p = 3;; p+=2) {
+
+                // LLT test
+                if(LLT(p)) {
+                        continue;
+                }
+
                 BigInt psum = BigInt.zero;
 
                 // the potential perfect number
-                BigInt perfect = BigInt.two.pow(p)*(BigInt.two.pow(p+1) - BigInt.one);
+                BigInt perfect = BigInt.two.pow(p-1)*(BigInt.two.pow(p) - BigInt.one);
 
                 // stop is the stopping point
                 // cant use sqrt because not implemented for BigInt
@@ -61,7 +64,4 @@ void main() {
                         print(perfect);
                 }
         }
-
-        print("Press <Enter> to end program");
-        String? _ = stdin.readLineSync()!;
 }
