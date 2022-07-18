@@ -41,43 +41,38 @@ if __name__ == '__main__':
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     print("")
 
-#   maximum number to search to
-    maxn = input("Enter max Mersenne prime power: ")
-
-#   if maxn has input, attempt to make it an integer, else exit
-    if len(maxn) > 0:
-        try:
-            maxn = int(maxn)
-        except:
-            print("Bad input")
-            _ = input("Press <Enter> to end program")
-            exit()
-    else:
-        exit()
-
-#   check to see if maxn is sane
-    if maxn < 4:
-        print("Need at least a power of 4")
-        _ = input("Press <Enter> to end program")
-        exit()
+#   Lucas-Lehmer prime test for odd p > 2
+    def LLT(p):
+        s = 4
+        M = 2**p - 1
+        for n in range(0,p-2):
+            s = ((s * s) - 2) % M;
+            if(s == 0):
+                return False
+        return True
 
     print("The perfect numbers:")
-
 #   print the first two perfect numbers (too hard to get the program to compute on its own)
     print(6)
     print(28)
 
 #   start loop to find perect numbers
-    for n in range(3,maxn):
+    n = 1
+    while True:
+        n += 2
 
 #       jobs list
         jobs = []
-        
+
 #       shared list between processes
         return_list = multiprocessing.Manager().list()
-        
+
+#       LLT check
+        if LLT(n):
+            continue
+
 #       the perfect number
-        p = 2**(n)*(2**(n+1)-1)
+        p = 2**(n-1)*(2**(n)-1)
 
 #       start the jobs
         for proc in range(numprocs):
@@ -95,5 +90,3 @@ if __name__ == '__main__':
             psum += l
         if psum == p*2:
             print(p)
-
-    _ = input("Press <Enter> to end program")
