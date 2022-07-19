@@ -72,15 +72,17 @@ loop x = do
 --    let m = zip (head z) [1..]
 --    let fltr = snd (unzip (filter ((==0).fst) m))
     let primes = sieve p
+    print primes
     let psum = test2 p primes 0
-    let sq = (ceiling (sqrt (fromIntegral p))) + 1
-    let lst = zip primes [2..sq]
-    let y = snd (unzip (filter (\lst -> (fst lst) /=  (snd lst)) lst))
-    let z = forM y $ \n -> test n p
-    let m = zip (head z) [1..]
-    let fltr = snd (unzip (filter ((==0).fst) m))
-    when (2*p == ((sum fltr)+psum)) $ print p
-    print ((sum fltr)+psum)
+    let lst = last primes
+    let l = zip primes [1..lst]
+    let y = snd (unzip (filter (\l -> (fst l) /=  (snd l)) l))
+    print y
+--    let z = forM y $ \n -> test n p
+--    let m = zip (head z) [1..]
+--    let fltr = snd (unzip (filter ((==0).fst) m))
+--    when (2*p == ((sum fltr)+psum)) $ print p
+--    print ((sum fltr)+psum)
 --    loop (x+2)
 
 -- starting point
