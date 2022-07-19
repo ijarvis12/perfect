@@ -10,44 +10,42 @@ import Control.Parallel
 
 
 test2 :: Integer -> [Integer] -> Integer -> Integer
-test2 p primes psum = do
-    let s = snd (unzip (filter ((==0).fst) (zip (map (mod p) primes) [1..])))
+test2 p lst psum = do
+    let s = snd (unzip (filter ((==0).fst) (zip (map (mod p) lst) lst)))
     let psum2 = psum + sum s
     let psum3 = psum2 + sum (map (div p) s)
     psum3
 
-test :: Integer -> Integer -> [Integer]
-test n p = [p `mod` n]
+--test :: Integer -> Integer -> [Integer]
+--test n p = [p `mod` n]
 
 sieveloopinner :: Integer -> Integer -> [Bool] -> [Bool]
 sieveloopinner j i a = do
     let lena = fromIntegral (length a) :: Integer
-    if j >= lena then
+    if j > lena then
         a
     else do
-        let b = (genericTake (j) a) ++ [False] ++ (genericDrop (j+1) a)
+        let b = (genericTake (j-1) a) ++ [False] ++ (genericDrop (j) a)
         sieveloopinner (j+i) i b
 
 sieveloop :: Integer -> [Bool] -> [Bool]
 sieveloop i a = do
     let lena = length a
     let sq = (ceiling (sqrt (fromIntegral lena))) + 1
-    if i >= sq then
+    if i > sq then
         a
     else do
         let b = sieveloopinner (i*i) i a
         sieveloop (i+1) b
 
 -- Sieve for primes
-sieve :: Integer -> [Integer]
+sieve :: Integer -> [Bool]
 sieve p = do
     let b = [True]
     let sq = (ceiling (sqrt (fromIntegral p))) + 1
     let c = replicate (length [2..sq]) True
     let a = b ++ c
-    let sl = zip [1..] (sieveloop 2 a)
-    let primes = fst (unzip (filter ((==True).snd) sl))
-    primes
+    sieveloop 2 a
 
 -- Lucas-Lehmer prime test for odd p > 2
 llt :: Integer -> Integer -> Integer -> Bool
@@ -71,19 +69,16 @@ loop x = do
 --    let z = forM [1..y] $ \n -> test n p
 --    let m = zip (head z) [1..]
 --    let fltr = snd (unzip (filter ((==0).fst) m))
-    let primes = sieve p
-    print primes
-    let psum = test2 p primes 0
-    let lst = last primes
-    let l = zip primes [1..lst]
-    let y = snd (unzip (filter (\l -> (fst l) /=  (snd l)) l))
-    print y
---    let z = forM y $ \n -> test n p
---    let m = zip (head z) [1..]
---    let fltr = snd (unzip (filter ((==0).fst) m))
---    when (2*p == ((sum fltr)+psum)) $ print p
---    print ((sum fltr)+psum)
---    loop (x+2)
+    let primesb = sieve p
+    let pzip = zip [1..] primesb
+    let primes = fst (unzip (filter ((==True).snd) pzip))
+    let lst = (last primes) + 1
+    let l = [1..lst]
+    let y = map snd . filter ((==False).fst) $ zip primesb l
+    let psum = test2 p y 0
+    let psum2 = test2 p primes psum
+    when (2*p == psum2) $ print p
+    loop (x+2)
 
 -- starting point
 main :: IO ()
