@@ -2,7 +2,7 @@
 --run with ./perfect2 +RTS -Nx [where x is the number from above]
 
 --program that finds perfect numbers using Mersenne Primes
---multiprocessed (note: not anymore, ignore first two lines)
+--multiprocessed
 
 import Data.List
 import Control.Monad
@@ -64,18 +64,21 @@ llt i s x = do
 loop :: Integer -> IO ()
 loop x = do
     when (llt 0 4 x) $ loop (x+2)
-    let p = 2^(x-1)*(2^(x)-1)
+    let p = 2^(x-1)*(2^(x)-1) :: Integer
 --    let y = (div p 2) + 2  :: Integer
 --    let z = forM [1..y] $ \n -> test n p
 --    let m = zip (head z) [1..]
 --    let fltr = snd (unzip (filter ((==0).fst) m))
     let primesb = sieve p
-    let pzip = zip [1..] primesb
-    let primes = fst (unzip (filter ((==True).snd) pzip))
+    let primes = fst.unzip.filter ((==True).snd) $ zip [1..] primesb
     let y = map snd . filter ((==False).fst) $ zip primesb [1..]
+--    let z = forM (sort (primes++y)) $ \n -> test n p
+--    let fltr = snd.unzip.filter ((==0).fst) $ zip (head z) [1..]
+--    let psum = summation p (head z) 0
     let psum = summation p y 0
     let psum2 = summation p primes psum
     when (2*p == psum2) $ print p
+--    when (p == (sum fltr)) $ print p
     loop (x+2)
 
 -- starting point
