@@ -5,7 +5,7 @@
 --multiprocessed
 
 import Data.List
---import Control.Monad
+import Control.Monad
 --import Control.Parallel
 
 
@@ -72,9 +72,7 @@ loop x = do
     let primesb = sieve p
     let pzip = zip [1..] primesb
     let primes = fst (unzip (filter ((==True).snd) pzip))
-    let lst = (last primes) + 1
-    let l = [1..lst]
-    let y = map snd . filter ((==False).fst) $ zip primesb l
+    let y = map snd . filter ((==False).fst) $ zip primesb [1..]
     let psum = test2 p y 0
     let psum2 = test2 p primes psum
     when (2*p == psum2) $ print p
