@@ -11,6 +11,7 @@ import Control.Parallel
 test :: Integer -> Integer -> [Integer]
 test n p = [p `mod` n]
 
+-- Lucas-Lehmer prime test for odd p > 2
 llt :: Integer -> Integer -> Integer -> Bool
 llt i s x = do
     if i == (x-2) then
