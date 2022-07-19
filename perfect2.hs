@@ -11,7 +11,7 @@ import Control.Parallel
 
 test2 :: Integer -> [Integer] -> Integer -> Integer
 test2 p primes psum = do
-    let s = filter (==0) (map (mod p) primes)
+    let s = snd (unzip (filter (==0).fst (zip (map (mod p) primes) [0..])))
     let psum2 = psum + sum s
     let psum3 = psum2 + sum (map (div p) primes)
     psum3
