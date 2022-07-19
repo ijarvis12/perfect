@@ -9,8 +9,8 @@ import Control.Monad
 --import Control.Parallel
 
 
-test2 :: Integer -> [Integer] -> Integer -> Integer
-test2 p lst psum = do
+summation :: Integer -> [Integer] -> Integer -> Integer
+summation p lst psum = do
     let s = snd (unzip (filter ((==0).fst) (zip (map (mod p) lst) lst)))
     let psum2 = psum + sum s
     let psum3 = psum2 + sum (map (div p) s)
@@ -73,8 +73,8 @@ loop x = do
     let pzip = zip [1..] primesb
     let primes = fst (unzip (filter ((==True).snd) pzip))
     let y = map snd . filter ((==False).fst) $ zip primesb [1..]
-    let psum = test2 p y 0
-    let psum2 = test2 p primes psum
+    let psum = summation p y 0
+    let psum2 = summation p primes psum
     when (2*p == psum2) $ print p
     loop (x+2)
 
