@@ -5,8 +5,8 @@
 --multiprocessed
 
 import Data.List
-import Control.Monad
-import Control.Parallel
+--import Control.Monad
+--import Control.Parallel
 
 
 test2 :: Integer -> [Integer] -> Integer -> Integer
