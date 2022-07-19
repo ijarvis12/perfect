@@ -2,7 +2,7 @@
 --run with ./perfect2 +RTS -Nx [where x is the number from above]
 
 --program that finds perfect numbers using Mersenne Primes
---multiprocessed
+--multiprocessed (only if Control.Parallel is uncommented and code uses forM)
 
 import Data.List
 import Control.Monad
