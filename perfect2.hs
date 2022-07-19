@@ -4,12 +4,66 @@
 --program that finds perfect numbers using Mersenne Primes
 --multiprocessed
 
+import Data.List
 import Control.Monad
 import Control.Parallel
 
 
+--for pri in primes:
+
+--        elif pri != primes[-1]:
+--            n = pri
+--            stop = primes[primes.index(pri)+1]
+--            while True:
+--                if n >= stop:
+--                    break
+--                n += 1
+--                if perfect % n == 0:
+--                    psum += n
+--                    psum += perfect // n
+--                    break
+
+test2 :: Integer -> [Integer] -> Integer -> Integer
+test2 p primes psum = do
+    let s = filter (==0) (map (mod p) primes)
+    let psum2 = psum + sum s
+    let psum3 = psum2 + sum (map (div p) primes)
+    psum3
+
 test :: Integer -> Integer -> [Integer]
 test n p = [p `mod` n]
+
+sieveloopinner :: Integer -> Integer -> [Bool] -> [Bool]
+sieveloopinner j i a = do
+    let lena = length a
+    let sq = (ceiling (sqrt (fromIntegral lena))) + 1
+    if j >= sq then
+        a
+    else do
+        let b = (genericTake (j-1) a) ++ [False] ++ (genericDrop j a)
+        sieveloopinner (j+i) i b
+
+sieveloop :: Integer -> [Bool] -> [Bool]
+sieveloop i a = do
+    let lena = length a
+    let sq = (ceiling (sqrt (fromIntegral lena))) + 1
+    let sqr = (ceiling (sqrt (fromIntegral sq))) + 1
+    if i >= sqr then
+        a
+    else do
+        let b = sieveloopinner (i*i) i a
+        sieveloop (i+1) b
+
+-- Sieve for primes
+sieve :: Integer -> [Integer]
+sieve p = do
+    let b = [False,True]
+    let sq = (ceiling (sqrt (fromIntegral p))) + 1
+    let c = replicate (length [2..sq]) True
+    let a = b ++ c
+    let sl = zip [0..] (sieveloop 2 a)
+    let primes = fst (unzip (filter ((==True).snd) sl))
+    primes
 
 -- Lucas-Lehmer prime test for odd p > 2
 llt :: Integer -> Integer -> Integer -> Bool
@@ -24,6 +78,7 @@ llt i s x = do
         else
             llt (i+1) y x
 
+-- main loop
 loop :: Integer -> IO ()
 loop x = do
     when (llt 0 4 x) $ loop (x+2)
@@ -35,6 +90,7 @@ loop x = do
     when (p == sum fltr) $ print p
     loop (x+2)
 
+-- starting point
 main :: IO ()
 main = do
     putStrLn $ id "Computing perfect numbers: "
