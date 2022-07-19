@@ -11,9 +11,9 @@ import Control.Parallel
 
 test2 :: Integer -> [Integer] -> Integer -> Integer
 test2 p primes psum = do
-    let s = snd (unzip (filter ((==0).fst) (zip (map (mod p) primes) [0..])))
+    let s = snd (unzip (filter ((==0).fst) (zip (map (mod p) primes) [1..])))
     let psum2 = psum + sum s
-    let psum3 = psum2 + sum (map (div p) primes)
+    let psum3 = psum2 + sum (map (div p) s)
     psum3
 
 test :: Integer -> Integer -> [Integer]
@@ -41,11 +41,11 @@ sieveloop i a = do
 -- Sieve for primes
 sieve :: Integer -> [Integer]
 sieve p = do
-    let b = [False,True]
+    let b = [True]
     let sq = (ceiling (sqrt (fromIntegral p))) + 1
     let c = replicate (length [2..sq]) True
     let a = b ++ c
-    let sl = zip [0..] (sieveloop 2 a)
+    let sl = zip [1..] (sieveloop 2 a)
     let primes = fst (unzip (filter ((==True).snd) sl))
     primes
 
@@ -73,15 +73,14 @@ loop x = do
 --    let fltr = snd (unzip (filter ((==0).fst) m))
     let primes = sieve p
     let psum = test2 p primes 0
-    print psum
---    let sq = (ceiling (sqrt (fromIntegral p))) + 1
---    let lst = zip primes [2..sq]
---    let y = snd (unzip (filter (\lst -> (fst lst) /=  (snd lst)) lst))
---    print y
---    let z = forM y $ \n -> test n p
---    let m = zip (head z) [1..]
---    let fltr = snd (unzip (filter ((==0).fst) m))
---    when (2*p == ((sum fltr)+psum)) $ print p
+    let sq = (ceiling (sqrt (fromIntegral p))) + 1
+    let lst = zip primes [2..sq]
+    let y = snd (unzip (filter (\lst -> (fst lst) /=  (snd lst)) lst))
+    let z = forM y $ \n -> test n p
+    let m = zip (head z) [1..]
+    let fltr = snd (unzip (filter ((==0).fst) m))
+    when (2*p == ((sum fltr)+psum)) $ print p
+    print ((sum fltr)+psum)
 --    loop (x+2)
 
 -- starting point
