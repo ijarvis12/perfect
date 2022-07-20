@@ -6,46 +6,46 @@
 
 import Data.List
 import Control.Monad
---import Control.Parallel
+import Control.Parallel
 
 
-summation :: Integer -> [Integer] -> Integer -> Integer
-summation p lst psum = do
-    let s = snd (unzip (filter ((==0).fst) (zip (map (mod p) lst) lst)))
-    let psum2 = psum + sum s
-    let psum3 = psum2 + sum (map (div p) s)
-    psum3
+--summation :: Integer -> [Integer] -> Integer -> Integer
+--summation p lst psum = do
+--    let s = snd (unzip (filter ((==0).fst) (zip (map (mod p) lst) lst)))
+--    let psum2 = psum + sum s
+--    let psum3 = psum2 + sum (map (div p) s)
+--    psum3
 
---test :: Integer -> Integer -> [Integer]
---test n p = [p `mod` n]
+test :: Integer -> Integer -> [Integer]
+test n p = [p `mod` n]
 
-sieveloopinner :: Integer -> Integer -> [Bool] -> [Bool]
-sieveloopinner j i a = do
-    let lena = fromIntegral (length a) :: Integer
-    if j > lena then
-        a
-    else do
-        let b = (genericTake (j-1) a) ++ [False] ++ (genericDrop (j) a)
-        sieveloopinner (j+i) i b
+--sieveloopinner :: Integer -> Integer -> [Bool] -> [Bool]
+--sieveloopinner j i a = do
+--    let lena = fromIntegral (length a) :: Integer
+--    if j > lena then
+--        a
+--    else do
+--        let b = (genericTake (j-1) a) ++ [False] ++ (genericDrop (j) a)
+--        sieveloopinner (j+i) i b
 
-sieveloop :: Integer -> [Bool] -> [Bool]
-sieveloop i a = do
-    let lena = length a
-    let sq = (ceiling (sqrt (fromIntegral lena))) + 1
-    if i > sq then
-        a
-    else do
-        let b = sieveloopinner (i*i) i a
-        sieveloop (i+1) b
+--sieveloop :: Integer -> [Bool] -> [Bool]
+--sieveloop i a = do
+--    let lena = length a
+--    let sq = (ceiling (sqrt (fromIntegral lena))) + 1
+--    if i > sq then
+--        a
+--    else do
+--        let b = sieveloopinner (i*i) i a
+--        sieveloop (i+1) b
 
 -- Sieve for primes
-sieve :: Integer -> [Bool]
-sieve p = do
-    let b = [True]
-    let sq = (ceiling (sqrt (fromIntegral p))) + 1
-    let c = replicate (length [2..sq]) True
-    let a = b ++ c
-    sieveloop 2 a
+--sieve :: Integer -> [Bool]
+--sieve p = do
+--    let b = [True]
+--    let sq = (ceiling (sqrt (fromIntegral p))) + 1
+--    let c = replicate (length [2..sq]) True
+--    let a = b ++ c
+--    sieveloop 2 a
 
 -- Lucas-Lehmer prime test for odd p > 2
 llt :: Integer -> Integer -> Integer -> Bool
@@ -65,20 +65,20 @@ loop :: Integer -> IO ()
 loop x = do
     when (llt 0 4 x) $ loop (x+2)
     let p = 2^(x-1)*(2^(x)-1) :: Integer
---    let y = (div p 2) + 2  :: Integer
---    let z = forM [1..y] $ \n -> test n p
---    let m = zip (head z) [1..]
---    let fltr = snd (unzip (filter ((==0).fst) m))
-    let primesb = sieve p
-    let primes = fst.unzip.filter ((==True).snd) $ zip [1..] primesb
-    let y = map snd . filter ((==False).fst) $ zip primesb [1..]
+    let y = ceiling (sqrt (fromIntegral p)) + 1  :: Integer
+    let z = forM [1..y] $ \n -> test n p
+    let fltr = snd . unzip . filter ((==0).fst) $ zip (head z) [1..]
+    let fltr2 = map (div p) fltr
+--    let primesb = sieve p
+--    let primes = fst.unzip.filter ((==True).snd) $ zip [1..] primesb
+--    let y = map snd . filter ((==False).fst) $ zip primesb [1..]
 --    let z = forM (sort (primes++y)) $ \n -> test n p
 --    let fltr = snd.unzip.filter ((==0).fst) $ zip (head z) [1..]
 --    let psum = summation p (head z) 0
-    let psum = summation p y 0
-    let psum2 = summation p primes psum
-    when (2*p == psum2) $ print p
---    when (p == (sum fltr)) $ print p
+--    let psum = summation p y 0
+--    let psum2 = summation p primes psum
+--    when (2*p == psum2) $ print p
+    when (2*p == ((sum fltr)+(sum fltr2))) $ print p
     loop (x+2)
 
 -- starting point
