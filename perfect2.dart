@@ -20,6 +20,7 @@ bool LLT(int p) {
         return true;
 }
 
+// Newton's method for square roots
 BigInt NewtonSqrt(BigInt perfect) {
         double? root;
         double x = perfect / BigInt.two;
@@ -37,6 +38,30 @@ BigInt NewtonSqrt(BigInt perfect) {
         return (BigInt.from(root) + BigInt.two); 
 }
 
+// Sieve of Eratosthenes
+List<int> Sieve() {
+        List<bool> A = [true,true];
+        int stop = 100000000;
+        for(int n = 2; n < stop; n++) {
+                A.add(true);
+        }
+        int stop2 = sqrt(stop).round();
+        for(int i = 2; i < stop2; i++) {
+                if(A[i]) {
+                        for(int j = i*i; j < stop; j = j + i) {
+                                A[j] = false;
+                        }
+                }
+        }
+        List<int> primes = [];
+        for(int k = 1; k < A.length; k++) {
+                if(A[k]) {
+                        primes.add(k);
+                }
+        }
+        return primes;
+}
+
 void main() {
         print("");
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -47,8 +72,12 @@ void main() {
         print("The perfect numbers:");
         print(6);
 
+        // prime sieve list
+        List<int> primes = Sieve();
+        BigInt pri;
+
         // find the perfect numbers
-        for(int p = 3;; p+=2) {
+        for(int p = 3; p < 21; p+=2) {
 
                 // LLT test
                 if(LLT(p)) {
@@ -64,16 +93,46 @@ void main() {
                 BigInt stop = NewtonSqrt(perfect);
 
                 // add up all the divisors into psum
-                for(BigInt n = BigInt.one; n < stop; n = n + BigInt.one) {
+                /*for(BigInt n = BigInt.one; n < stop; n = n + BigInt.one) {
                         if(perfect % n == BigInt.zero) {
                                 psum = psum + n;
                                 psum = psum + BigInt.from(perfect / n);
                         }
+                }*/
+
+                int count = 1;
+                for(BigInt n = BigInt.zero; n < stop; n = n + BigInt.one) {
+                        pri = BigInt.from(primes[count]);
+                        count++;
+                        if(pri > stop) {
+                                break;
+                        }
+                        if(perfect % pri == 0) {
+                                psum = psum + pri;
+                                psum = psum + BigInt.from(perfect / pri);
+                        }
+                        else if(pri != primes[-1]) {
+                                BigInt x = pri;
+                                BigInt stop = BigInt.from(primes[primes.indexOf(pri)+1]);
+                                while(true) {
+                                        if(x >= stop) {
+                                                break;
+                                        }
+                                        x = x + BigInt.one;
+                                        if(perfect % x == 0) {
+                                                psum = psum + x;
+                                                psum = psum + BigInt.from(perfect / pri);
+                                                break;
+                                        }
+                                }
+                        }
                 }
 
+                // get rid of extra possible summation
                 if(stop*stop == perfect) {
                         psum = psum - stop;
                 }
+
 
                 // if psum is equal to the potenial perfect number, we have a match
                 if(psum == BigInt.two*perfect) {
