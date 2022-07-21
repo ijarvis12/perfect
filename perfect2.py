@@ -41,11 +41,40 @@ while True:
 #   the limit to search to
     sqrtp = int(sqrt(perfect))
 
+#   Sieve for primes
+    A = [False,True]
+    for i in range(2,sqrtp+1):
+        A.append(True)
+    for i in range(2,int(sqrt(sqrtp))+1):
+        if A[i]:
+            for j in range(i*i,sqrtp+1,i):
+                A[j] = False
+    primes = []
+    for i,a in enumerate(A):
+        if a:
+            primes.append(i)
+
 #   add up all the divisors into psum
-    for n in range(1,sqrtp+1):
-        if perfect % n == 0:
-            psum += n
-            psum += perfect // n
+#    for n in range(1,sqrtp+1):
+#        if perfect % n == 0:
+#            psum += n
+#            psum += perfect // n
+
+    for pri in primes:
+        if perfect % pri == 0:
+            psum += pri
+            psum += perfect // pri
+        elif pri != primes[-1]:
+            n = pri
+            stop = primes[primes.index(pri)+1]
+            while True:
+                if n >= stop:
+                    break
+                n += 1
+                if perfect % n == 0:
+                    psum += n
+                    psum += perfect // n
+                    break
 
 #   get rid of possible extra summation
     if sqrtp**2 == perfect:
