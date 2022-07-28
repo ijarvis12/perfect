@@ -22,15 +22,16 @@ bool LLT(int p) {
 
 // Newton's method for square roots
 BigInt NewtonSqrt(BigInt perfect) {
-        double? root;
+        double? root,check;
         double x = perfect / BigInt.two;
         double n = x;
         while(true) {
                 root = 0.5 * (x + (n / x));
-                if((root - x) > 0 && (root - x) < 1) {
+                check = root - x;
+                if(check > 0 && check < 1) {
                         break;
                 }
-                else if((root - x) < 0 && (root - x) > -1) {
+                else if(check < 0 && check > -1) {
                         break;
                 }
                 x = root;
@@ -101,29 +102,16 @@ void main() {
                 }*/
 
                 int count = 1;
-                for(BigInt n = BigInt.zero; n < stop; n = n + BigInt.one) {
-                        pri = BigInt.from(primes[count]);
-                        count++;
-                        if(pri > stop) {
-                                break;
-                        }
+                for(BigInt pri = BigInt.from(primes[1]); pri < stop; pri = BigInt.from(primes[++count])) {
                         if(perfect % pri == 0) {
                                 psum = psum + pri;
                                 psum = psum + BigInt.from(perfect / pri);
                         }
-                        else if(pri != primes[-1]) {
-                                BigInt x = pri;
-                                BigInt stop = BigInt.from(primes[primes.indexOf(pri)+1]);
-                                while(true) {
-                                        if(x >= stop) {
-                                                break;
-                                        }
-                                        x = x + BigInt.one;
-                                        if(perfect % x == 0) {
-                                                psum = psum + x;
-                                                psum = psum + BigInt.from(perfect / pri);
-                                                break;
-                                        }
+                        for(BigInt x = pri; x < BigInt.from(primes[count+1]); x = x + BigInt.one) {
+                                if(perfect % x == 0) {
+                                        psum = psum + x;
+                                        psum = psum + BigInt.from(perfect / pri);
+                                        break;
                                 }
                         }
                 }
@@ -135,7 +123,7 @@ void main() {
 
 
                 // if psum is equal to the potenial perfect number, we have a match
-                if(psum == BigInt.two*perfect) {
+                if(psum == perfect) {
                         print(perfect);
                 }
         }
