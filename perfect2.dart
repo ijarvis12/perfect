@@ -101,14 +101,14 @@ void main() {
                         }
                 }*/
 
-                int count = 1;
-                for(BigInt pri = BigInt.from(primes[1]); pri < stop; pri = BigInt.from(primes[++count])) {
-                        if(perfect % pri == 0) {
+                int count = 0;
+                for(BigInt pri = BigInt.from(primes[0]); pri < stop; pri = BigInt.from(primes[++count])) {
+                        if(perfect % pri == BigInt.zero) {
                                 psum = psum + pri;
                                 psum = psum + BigInt.from(perfect / pri);
                         }
                         for(BigInt x = pri; x < BigInt.from(primes[count+1]); x = x + BigInt.one) {
-                                if(perfect % x == 0) {
+                                if(perfect % x == BigInt.zero) {
                                         psum = psum + x;
                                         psum = psum + BigInt.from(perfect / pri);
                                         break;
@@ -121,9 +121,9 @@ void main() {
                         psum = psum - stop;
                 }
 
-
+                print('psum: $psum ,perfect: $perfect');
                 // if psum is equal to the potenial perfect number, we have a match
-                if(psum == perfect) {
+                if(psum == BigInt.two*perfect) {
                         print(perfect);
                 }
         }
