@@ -65,14 +65,15 @@ loop :: Integer -> IO ()
 loop x = do
     when (llt 0 4 x) $ loop (x+2)
     let p = 2^(x-1)*(2^(x)-1) :: Integer
---    let y = ceiling (sqrt (fromIntegral p)) + 1  :: Integer
+    let y = ceiling (sqrt (fromIntegral p)) + 1  :: Integer
 --    let z = forM [1..y] $ \n -> test n p
 --    let fltr = snd . unzip . filter ((==0).fst) $ zip (head z) [1..]
 --    let fltr2 = map (div p) fltr
 --    let primesb = sieve p
 --    let primes = fst.unzip.filter ((==True).snd) $ zip [2..] primesb
-    let divisors = 1 : filter ((==0) . rem p) [2 .. p `div` 2]
-    when (p == (sum divisors)) $ print p
+    let divisors = 1 : filter ((==0) . rem p) [2 .. y]
+    let divisors2 = (map (div p) divisors) ++ divisors
+    when (2*p == (sum divisors2)) $ print p
 --    let y = map snd . filter ((==False).fst) $ zip primesb [1..]
 --    let z = forM (sort (primes++y)) $ \n -> test n p
 --    let fltr = snd.unzip.filter ((==0).fst) $ zip (head z) [1..]
