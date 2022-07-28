@@ -64,18 +64,16 @@ while True:
         if perfect % pri == 0:
             psum += pri
             psum += perfect // pri
-        elif pri != primes[-1]:
-            n = pri
 #            stop = primes[primes.index(pri)+1]
 #            while True:
 #                if n >= stop:
 #                    break
 #                n += 1
-            for n in range(pri,primes[primes.index(pri)+1]):
-                if perfect % n == 0:
-                    psum += n
-                    psum += perfect // n
-                    break
+        for n in range(pri,primes[primes.index(pri)+1]):
+            if perfect % n == 0:
+                psum += n
+                psum += perfect // n
+                break
 
 #   get rid of possible extra summation
     if sqrtp**2 == perfect:
