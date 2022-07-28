@@ -74,8 +74,8 @@ void main() {
         print(6);
 
         // prime sieve list
-        List<int> primes = Sieve();
-        BigInt pri;
+        //List<int> primes = Sieve();
+        //BigInt pri;
 
         // find the perfect numbers
         for(int p = 3; p < 21; p+=2) {
@@ -94,15 +94,16 @@ void main() {
                 BigInt stop = NewtonSqrt(perfect);
 
                 // add up all the divisors into psum
-                /*for(BigInt n = BigInt.one; n < stop; n = n + BigInt.one) {
+                for(BigInt n = BigInt.one; n < stop; n = n + BigInt.one) {
                         if(perfect % n == BigInt.zero) {
                                 psum = psum + n;
                                 psum = psum + BigInt.from(perfect / n);
                         }
-                }*/
+                }
 
-                int count = 0;
+                /*int count = 0;
                 for(BigInt pri = BigInt.from(primes[0]); pri < stop; pri = BigInt.from(primes[++count])) {
+                        print("pri $pri ,perfect $perfect");
                         if(perfect % pri == BigInt.zero) {
                                 psum = psum + pri;
                                 psum = psum + BigInt.from(perfect / pri);
@@ -110,18 +111,18 @@ void main() {
                         for(BigInt x = pri; x < BigInt.from(primes[count+1]); x = x + BigInt.one) {
                                 if(perfect % x == BigInt.zero) {
                                         psum = psum + x;
-                                        psum = psum + BigInt.from(perfect / pri);
+                                        psum = psum + BigInt.from(perfect / x);
                                         break;
                                 }
                         }
-                }
+                }*/
 
                 // get rid of extra possible summation
                 if(stop*stop == perfect) {
                         psum = psum - stop;
                 }
 
-                print('psum: $psum ,perfect: $perfect');
+
                 // if psum is equal to the potenial perfect number, we have a match
                 if(psum == BigInt.two*perfect) {
                         print(perfect);
