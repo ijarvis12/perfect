@@ -66,11 +66,12 @@ while True:
             psum += perfect // pri
         elif pri != primes[-1]:
             n = pri
-            stop = primes[primes.index(pri)+1]
-            while True:
-                if n >= stop:
-                    break
-                n += 1
+#            stop = primes[primes.index(pri)+1]
+#            while True:
+#                if n >= stop:
+#                    break
+#                n += 1
+            for n in range(pri,primes[primes.index(pri)+1]):
                 if perfect % n == 0:
                     psum += n
                     psum += perfect // n
