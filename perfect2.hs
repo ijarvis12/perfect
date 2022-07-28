@@ -6,7 +6,7 @@
 
 --import Data.List
 import Control.Monad
---import Control.Parallel
+import Control.Parallel
 
 
 --summation :: Integer -> [Integer] -> Integer -> Integer
@@ -16,8 +16,8 @@ import Control.Monad
 --    let psum3 = psum2 + sum (map (div p) s)
 --    psum3
 
---test :: Integer -> Integer -> [Integer]
---test n p = [p `mod` n]
+test :: Integer -> Integer -> [Integer]
+test n p = [p `mod` n]
 
 {-
 sieveloopinner :: Integer -> Integer -> [Bool] -> [Bool]
@@ -66,14 +66,11 @@ loop x = do
     when (llt 0 4 x) $ loop (x+2)
     let p = 2^(x-1)*(2^(x)-1) :: Integer
     let y = ceiling (sqrt (fromIntegral p)) + 1  :: Integer
---    let z = forM [1..y] $ \n -> test n p
---    let fltr = snd . unzip . filter ((==0).fst) $ zip (head z) [1..]
---    let fltr2 = map (div p) fltr
+    let z = forM [1..y] $ \n -> test n p
+    let fltr = snd . unzip . filter ((==0).fst) $ zip (head z) [1..]
+    let fltr2 = map (div p) fltr
 --    let primesb = sieve p
 --    let primes = fst.unzip.filter ((==True).snd) $ zip [2..] primesb
-    let divisors = 1 : filter ((==0) . rem p) [2 .. y]
-    let divisors2 = (map (div p) divisors) ++ divisors
-    when (2*p == (sum divisors2)) $ print p
 --    let y = map snd . filter ((==False).fst) $ zip primesb [1..]
 --    let z = forM (sort (primes++y)) $ \n -> test n p
 --    let fltr = snd.unzip.filter ((==0).fst) $ zip (head z) [1..]
@@ -81,7 +78,7 @@ loop x = do
 --    let psum = summation p y 0
 --    let psum2 = summation p primes psum
 --    when (2*p == psum2) $ print p
---    when (2*p == ((sum fltr)+(sum fltr2))) $ print p
+    when (2*p == ((sum fltr)+(sum fltr2))) $ print p
     loop (x+2)
 
 -- starting point
