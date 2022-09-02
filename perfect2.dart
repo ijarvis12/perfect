@@ -39,42 +39,12 @@ BigInt NewtonSqrt(BigInt perfect) {
         return (BigInt.from(root) + BigInt.two); 
 }
 
-// Sieve of Eratosthenes
-List<int> Sieve() {
-        List<bool> A = [true,true];
-        int stop = 100000000;
-        for(int n = 2; n < stop; n++) {
-                A.add(true);
-        }
-        int stop2 = sqrt(stop).round();
-        for(int i = 2; i < stop2; i++) {
-                if(A[i]) {
-                        for(int j = i*i; j < stop; j = j + i) {
-                                A[j] = false;
-                        }
-                }
-        }
-        List<int> primes = [];
-        for(int k = 1; k < A.length; k++) {
-                if(A[k]) {
-                        primes.add(k);
-                }
-        }
-        return primes;
-}
-
 void main() {
         print("");
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         print(" This program finds perfect numbers using Mersenne Primes ");
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         print("");
-
-
-        // prime sieve list
-        List<int> primes = Sieve();
-        BigInt pri;
-
 
         print("The perfect numbers:");
         print(6);
@@ -96,25 +66,10 @@ void main() {
                 BigInt stop = NewtonSqrt(perfect);
 
                 // add up all the divisors into psum
-                /*for(BigInt n = BigInt.one; n < stop; n = n + BigInt.one) {
+                for(BigInt n = BigInt.one; n < stop; n = n + BigInt.one) {
                         if(perfect % n == BigInt.zero) {
                                 psum = psum + n;
                                 psum = psum + BigInt.from(perfect / n);
-                        }
-                }*/
-
-                int count = 0;
-                for(BigInt pri = BigInt.from(primes[0]); pri < stop; pri = BigInt.from(primes[++count])) {
-                        if(perfect % pri == BigInt.zero) {
-                                psum = psum + pri;
-                                psum = psum + BigInt.from(perfect / pri);
-                        }
-                        for(BigInt x = pri + BigInt.one; x < BigInt.from(primes[count+1]); x = x + BigInt.one) {
-                                if(perfect % x == BigInt.zero) {
-                                        psum = psum + x;
-                                        psum = psum + BigInt.from(perfect / x);
-                                        break;
-                                }
                         }
                 }
 
