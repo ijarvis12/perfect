@@ -30,5 +30,4 @@ loop x = do
 main :: IO ()
 main = do
   putStrLn "Computing perfect numbers: "
-  let x = 1 :: Integer
-  loop x
+  loop 1
