@@ -15,8 +15,8 @@ print("")
 # Lucas-Lehmer prime test for odd p > 2
 def LLT(p):
     s = 4
-    M = 2**p - 1
-    for n in range(0,p-2):
+    M = (1<<p) - 1
+    for n in range(0,p-1):
         s = ((s * s) - 2) % M;
         if(s == 0):
             return False
@@ -29,14 +29,17 @@ print(6)
 p = 1
 while True:
     p += 2
-    psum = 0
 
 #   LLT check
     if LLT(p):
         continue
 
+#   summation var of divisors
+    psum = 0
+
 #   the potential perfect number
-    perfect = 2**(p-1)*(2**(p)-1)
+#    perfect = 2**(p-1)*(2**(p)-1)
+    perfect = (1<<(2*p-1))-(1<<(p-1))
 
 #   the limit to search to
     sqrtp = int(sqrt(perfect))
