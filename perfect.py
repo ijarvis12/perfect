@@ -4,8 +4,8 @@
 # inputs: numprocs: number of processes the computer has
 #             proc: process number
 #                p: number to see if perfect
-#      return_list: list of return values
-def perfect(numprocs,proc,p,return_list):
+#             psum: summation of divisors
+def perfect(numprocs,proc,p,psum):
 #   variable start is the starting point
     start = int(sqrt(p))*proc//numprocs
     if start < 1:
@@ -19,8 +19,9 @@ def perfect(numprocs,proc,p,return_list):
 #   add all divisors into return variable
     for n in range(start,end):
         if p % n == 0:
-            return_list.append(n)
-            return_list.append(p//n)
+            psum.value += n
+            psum.value += p//n
+
     return
 
 
@@ -44,8 +45,8 @@ if __name__ == '__main__':
 #   Lucas-Lehmer prime test for odd p > 2
     def LLT(p):
         s = 4
-        M = 2**p - 1
-        for n in range(0,p-2):
+        M = (1<<p) - 1
+        for n in range(0,p-1):
             s = ((s * s) - 2) % M;
             if(s == 0):
                 return False
@@ -56,28 +57,30 @@ if __name__ == '__main__':
     print(6)
     print(28)
 
-#   start loop to find perect numbers
+#   start loop to find perfect numbers
     n = 1
     while True:
         n += 2
-
-#       jobs list
-        jobs = []
-
-#       shared list between processes
-        return_list = multiprocessing.Manager().list()
 
 #       LLT check
         if LLT(n):
             continue
 
+#       jobs list
+        jobs = []
+
+#       shared list between processes
+#       return_list = multiprocessing.Manager().list()
+#       shared summation variable of divisors
+        psum = multiprocessing.Manager().Value('i',0)
+
 #       the perfect number
 #       p = 2**(n-1)*(2**(n)-1)
-        p = (1<<(2*p-1))-(1<<(p-1))
+        p = (1<<(2*n-1))-(1<<(n-1))
 
 #       start the jobs
         for proc in range(numprocs):
-            job = multiprocessing.Process(target=perfect, args=(numprocs,proc,p,return_list,))
+            job = multiprocessing.Process(target=perfect, args=(numprocs,proc,p,psum,))
             jobs.append(job)
             job.start()
 
@@ -85,9 +88,6 @@ if __name__ == '__main__':
         for job in jobs:
             job.join()
 
-#       add up values in return_list to see if perfect number
-        psum = 0
-        for l in return_list:
-            psum += l
-        if psum == p*2:
+#       see if we have a perfect number
+        if psum.value == (p*2):
             print(p)
