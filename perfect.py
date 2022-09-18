@@ -17,12 +17,23 @@ def perfect(numprocs,proc,p,psum):
         end = 2
 
 #   add all divisors into return variable
-    for n in range(start,end):
-        if p % n == 0:
-            psum.value += n
-            psum.value += p//n
+    for i in range(start,end):
+        if p % i == 0:
+            psum.value += i
+            psum.value += p//i
 
     return
+
+
+# Lucas-Lehmer prime test for odd n > 2
+def LLT(n):
+    s = 4
+    M = (1<<n) - 1
+    for i in range(0,n-2):
+        s = ((s * s) - 2) % M;
+        if(s == 0):
+            return False
+    return True
 
 
 ##                                                           ##
@@ -30,11 +41,11 @@ def perfect(numprocs,proc,p,psum):
 ##                                                           ##
 if __name__ == '__main__':
 
-    import multiprocessing
+    from multiprocessing import cpu_count,Manager,Process
     from math import sqrt
 
 #   variable that holds the number of processes the computer has
-    numprocs = multiprocessing.cpu_count()
+    numprocs = cpu_count()
 
     print("")
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -42,17 +53,8 @@ if __name__ == '__main__':
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     print("")
 
-#   Lucas-Lehmer prime test for odd p > 2
-    def LLT(p):
-        s = 4
-        M = (1<<p) - 1
-        for n in range(0,p-1):
-            s = ((s * s) - 2) % M;
-            if(s == 0):
-                return False
-        return True
-
     print("The perfect numbers:")
+
 #   print the first two perfect numbers (too hard to get the program to compute on its own)
     print(6)
     print(28)
@@ -69,10 +71,8 @@ if __name__ == '__main__':
 #       jobs list
         jobs = []
 
-#       shared list between processes
-#       return_list = multiprocessing.Manager().list()
 #       shared summation variable of divisors
-        psum = multiprocessing.Manager().Value('i',0)
+        psum = Manager().Value('i',0)
 
 #       the perfect number
 #       p = 2**(n-1)*(2**(n)-1)
@@ -80,7 +80,7 @@ if __name__ == '__main__':
 
 #       start the jobs
         for proc in range(numprocs):
-            job = multiprocessing.Process(target=perfect, args=(numprocs,proc,p,psum,))
+            job = Process(target=perfect, args=(numprocs,proc,p,psum,))
             jobs.append(job)
             job.start()
 
