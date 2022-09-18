@@ -72,7 +72,8 @@ if __name__ == '__main__':
             continue
 
 #       the perfect number
-        p = 2**(n-1)*(2**(n)-1)
+#       p = 2**(n-1)*(2**(n)-1)
+        p = (1<<(2*p-1))-(1<<(p-1))
 
 #       start the jobs
         for proc in range(numprocs):
