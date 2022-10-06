@@ -14,22 +14,10 @@ forLoop y lst w = do
     else
       forLoop y lst (w+1)
 
-test :: Integer -> Integer
-test y = forLoop y [1] 2
-
-{-
-test :: Integer -> Integer
-test y = do
-  let m = map (y `mod`) [1 .. (div y 2)]
-  let f = zip [1..] m
-  let fltr = fst (unzip (filter ((==0).snd) f))
-  sum fltr
--}
-
 perfect :: Integer -> String
 perfect x = do
   let y = 2^(x)*(2^(x+1)-1)
-  let z = test y
+  let z = forLoop y [1] 2
   if y == z then
       show y
   else []
