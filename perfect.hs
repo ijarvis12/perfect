@@ -2,13 +2,29 @@
 
 --program that finds perfect numbers using Mersenne Primes
 
+forLoop :: Integer -> [Integer] -> Integer -> Integer
+forLoop y lst w = do
+  if (w > ((ceiling (sqrt (fromIntegral y))) + 1)) then
+    sum lst
+  else do
+    let m = mod y w
+    if (m == 0) then do
+      let n = div y w
+      forLoop y (lst ++ [w,n]) (w+1)
+    else
+      forLoop y lst (w+1)
+
+test :: Integer -> Integer
+test y = forLoop y [1] 2
+
+{-
 test :: Integer -> Integer
 test y = do
   let m = map (y `mod`) [1 .. (div y 2)]
   let f = zip [1..] m
   let fltr = fst (unzip (filter ((==0).snd) f))
   sum fltr
-    
+-}
 
 perfect :: Integer -> String
 perfect x = do
@@ -29,5 +45,5 @@ loop x = do
 
 main :: IO ()
 main = do
-  putStrLn "Computing perfect numbers: "
+  putStrLn "Computing perfect numbers: \n6"
   loop 1
