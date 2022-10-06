@@ -16,22 +16,38 @@ forLoop y lst w = do
 
 perfect :: Integer -> String
 perfect x = do
-  let y = 2^(x)*(2^(x+1)-1)
+  let y = 2^(x-1)*(2^(x)-1)
   let z = forLoop y [1] 2
   if y == z then
-      show y
+    show y
   else []
+
+-- Lucas-Lehmer prime test for odd p > 2
+llt :: Integer -> Integer -> Integer -> Bool
+llt i s x = do
+    if i == (x-2) then
+      True
+    else do
+      let m = 2^x - 1
+      let y = ((s*s)-2) `mod` m
+      if y == 0 then
+        False
+      else
+        llt (i+1) y x
 
 loop :: Integer -> IO ()
 loop x = do
-  let perf = perfect x
-  if not (null perf) then do
+  if (llt 0 4 x) then
+    loop (x+2)
+  else do
+    let perf = perfect x
+    if not (null perf) then do
       putStrLn perf
-      loop (x+1)
-  else
-      loop (x+1)
+      loop (x+2)
+    else
+      loop (x+2)
 
 main :: IO ()
 main = do
   putStrLn "Computing perfect numbers: \n6\n28"
-  loop 1
+  loop 5
