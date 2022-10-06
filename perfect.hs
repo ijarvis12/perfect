@@ -22,7 +22,7 @@ perfect x = do
     show y
   else []
 
--- Lucas-Lehmer prime test for odd p > 2
+-- Lucas-Lehmer prime test for odd x > 2
 llt :: Integer -> Integer -> Integer -> Bool
 llt i s x = do
     if i == (x-2) then
