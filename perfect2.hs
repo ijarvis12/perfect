@@ -2,10 +2,9 @@
 --run with ./perfect2 +RTS -Nx [where x is the number from above]
 
 --program that finds perfect numbers using Mersenne Primes
---multiprocessed (only if Control.Parallel is uncommented and code uses forM)
+--multiprocessed
 
 import Control.Monad
-import Control.Parallel
 
 test :: Integer -> Integer -> [Integer]
 test n p = [p `mod` n]
