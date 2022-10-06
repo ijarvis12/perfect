@@ -45,5 +45,5 @@ loop x = do
 
 main :: IO ()
 main = do
-  putStrLn "Computing perfect numbers: \n6"
+  putStrLn "Computing perfect numbers: \n6\n28"
   loop 1
