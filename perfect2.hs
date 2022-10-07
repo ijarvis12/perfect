@@ -1,13 +1,24 @@
---compile with ghc -Ox -threaded --make perfect2.hs [where x is # of threads]
+--compile with ghc -threaded --make perfect2.hs [where x is # of threads]
 --run with ./perfect2 +RTS -Nx [where x is the number from above]
 
 --program that finds perfect numbers using Mersenne Primes
---multiprocessed
+--multiprocessed (cabal install parallel)
 
+import Data.List
 import Control.Monad
+import Data.Traversable
 
+--test :: Integer -> Integer -> [Integer]
+--test n p = [p `mod` n]
+
+--actual test cases
+test2 :: Integer -> Bool -> Integer -> [Integer]
+test2 n False d = [0]
+test2 n True d = [n,d]
+
+-- entry test func
 test :: Integer -> Integer -> [Integer]
-test n p = [p `mod` n]
+test n p = test2 n ((mod p n)==0) (div p n)
 
 -- Lucas-Lehmer prime test for odd x > 2
 llt :: Integer -> Integer -> Integer -> Bool
@@ -28,10 +39,8 @@ loop x = do
     when (llt 0 4 x) $ loop (x+2)
     let p = 2^(x-1)*(2^(x)-1) :: Integer
     let y = ceiling (sqrt (fromIntegral p)) + 1  :: Integer
-    let z = forM [1..y] $ \n -> test n p
-    let fltr = snd . unzip . filter ((==0).fst) $ zip (head z) [1..]
-    let fltr2 = map (div p) fltr
-    when (2*p == ((sum fltr)+(sum fltr2))) $ print p
+    let z = forM [1..y] $ \n -> test p
+    when (2*p == (sum (head z))) $ print p
     loop (x+2)
 
 -- starting point
