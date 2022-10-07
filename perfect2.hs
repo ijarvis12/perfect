@@ -1,5 +1,5 @@
---compile with ghc -threaded --make perfect2.hs [where x is # of threads]
---run with ./perfect2 +RTS -Nx [where x is the number from above]
+--compile with ghc -threaded --make perfect2.hs
+--run with ./perfect2 +RTS -Nx [where x is # of threads]
 
 --program that finds perfect numbers using Mersenne Primes
 --multiprocessed (cabal install parallel)
