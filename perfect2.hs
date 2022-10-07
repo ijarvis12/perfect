@@ -12,13 +12,9 @@ import Data.Traversable
 --test n p = [p `mod` n]
 
 --actual test cases
-test2 :: Integer -> Bool -> Integer -> [Integer]
-test2 n False d = [0]
-test2 n True d = [n,d]
-
--- entry test func
-test :: Integer -> Integer -> [Integer]
-test n p = test2 n ((mod p n)==0) (div p n)
+test :: Integer -> Bool -> Integer -> [Integer]
+test n False d = [0]
+test n True d = [n,d]
 
 -- Lucas-Lehmer prime test for odd x > 2
 llt :: Integer -> Integer -> Integer -> Bool
@@ -39,9 +35,10 @@ loop x = do
     when (llt 0 4 x) $ loop (x+2)
     let p = 2^(x-1)*(2^(x)-1) :: Integer
     let y = ceiling (sqrt (fromIntegral p)) + 1  :: Integer
-    let z = forM [1..y] $ \n -> test p
-    when (2*p == (sum (head z))) $ print p
-    loop (x+2)
+    let z = forM [1..y] $ \n -> test n ((mod p n)==0) (div p n)
+    print z
+--    when (2*p == (sum (fst z))) $ print p
+--    loop (x+2)
 
 -- starting point
 main :: IO ()
