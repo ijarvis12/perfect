@@ -88,6 +88,10 @@ if __name__ == '__main__':
         for job in jobs:
             job.join()
 
+#       last value
+        if p % int(sqrt(p)) == 0:
+            psum.value += int(sqrt(p)) 
+
 #       see if we have a perfect number
         if psum.value == (p*2):
             print(p)
