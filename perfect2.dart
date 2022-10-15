@@ -57,7 +57,7 @@ void main() {
                         continue;
                 }
 
-                BigInt psum = BigInt.zero;
+                BigInt psum = BigInt.one;
 
                 // the potential perfect number
                 BigInt perfect = BigInt.two.pow(p-1)*(BigInt.two.pow(p) - BigInt.one);
@@ -66,7 +66,7 @@ void main() {
                 BigInt stop = NewtonSqrt(perfect);
 
                 // add up all the divisors into psum
-                for(BigInt n = BigInt.one; n < stop; n = n + BigInt.one) {
+                for(BigInt n = BigInt.two; n < stop; n = n + BigInt.one) {
                         if(perfect % n == BigInt.zero) {
                                 psum = psum + n;
                                 psum = psum + BigInt.from(perfect / n);
@@ -80,7 +80,7 @@ void main() {
 
 
                 // if psum is equal to the potenial perfect number, we have a match
-                if(psum == BigInt.two*perfect) {
+                if(psum == perfect) {
                         print(perfect);
                 }
         }
