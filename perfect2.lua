@@ -40,7 +40,7 @@ end
 
 -- find the perfect numbers
 for p = 1,maxn,1 do
-    psum = 0
+    psum = 1
 --  the potential perfect number
     perfect = 2^(p)*(2^(p+1)-1)
 
@@ -48,7 +48,7 @@ for p = 1,maxn,1 do
     sqrtp = math.ceil(math.sqrt(perfect))
 
 --  add up all the divisors into psum
-    for n = 1,sqrtp,1 do
+    for n = 2,sqrtp,1 do
         if perfect % n == 0 then
             psum = psum + n
             psum = psum + (perfect / n)
@@ -61,7 +61,7 @@ for p = 1,maxn,1 do
     end
 
 --  if psum is equal to the potenial perfect number, we have a match
-    if psum == 2*perfect then
+    if psum == perfect then
         print(perfect)
     end
 end
