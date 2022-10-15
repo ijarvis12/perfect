@@ -8,13 +8,13 @@
 def perfect(numprocs,proc,p,psum):
 #   variable start is the starting point
     start = int(sqrt(p))*proc//numprocs
-    if start < 1:
-        start = 1
+    if start < 2:
+        start = 2
 
 #   variable end is the ending point
     end = int(sqrt(p))*(proc+1)//numprocs
-    if end < 2:
-        end = 2
+    if end < 3:
+        end = 3
 
 #   add all divisors into return variable
     for i in range(start,end):
@@ -72,10 +72,10 @@ if __name__ == '__main__':
         jobs = []
 
 #       shared summation variable of divisors
-        psum = Manager().Value('i',0)
+        psum = Manager().Value('i',1)
 
 #       the perfect number
-#       p = 2**(n-1)*(2**(n)-1)
+########p = 2**(n-1)*(2**(n)-1)
         p = (1<<(2*n-1))-(1<<(n-1))
 
 #       start the jobs
@@ -93,5 +93,5 @@ if __name__ == '__main__':
             psum.value += int(sqrt(p)) 
 
 #       see if we have a perfect number
-        if psum.value == (p*2):
+        if psum.value == p:
             print(p)
