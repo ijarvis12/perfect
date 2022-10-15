@@ -51,7 +51,7 @@ while p<30:
 		sqrtp = torch.tensor(int(sqrt(perfect))), device=cuda)
 		
 #       add up all the divisors into psum
-		for n in range(1,sqrtp+1):
+		for n in range(1,sqrtp.item()+1):
 			if perfect % n == 0:
 			psum += n
 			psum += perfect // n
