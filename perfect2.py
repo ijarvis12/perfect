@@ -35,17 +35,17 @@ while True:
         continue
 
 #   summation var of divisors
-    psum = 0
+    psum = 1
 
 #   the potential perfect number
-#    perfect = 2**(p-1)*(2**(p)-1)
+####perfect = 2**(p-1)*(2**(p)-1)
     perfect = (1<<(2*p-1))-(1<<(p-1))
 
 #   the limit to search to
     sqrtp = int(sqrt(perfect))
 
 #   add up all the divisors into psum
-    for n in range(1,sqrtp+1):
+    for n in range(2,sqrtp+1):
         if perfect % n == 0:
             psum += n
             psum += perfect // n
@@ -55,5 +55,5 @@ while True:
         psum -= sqrtp
 
 #   if psum is equal to the potenial perfect number, we have a match
-    if psum == 2*perfect:
+    if psum == perfect:
         print(perfect)
