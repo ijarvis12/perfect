@@ -38,7 +38,7 @@ while p<30:
     if LLT(p):
         continue
 
-	with torch.cuda.device()
+	with torch.cuda.device(cuda):
 
 #       summation var of divisors
 		psum = torch.tensor(0, device=cuda)
