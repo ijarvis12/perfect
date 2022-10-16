@@ -71,7 +71,8 @@ while p<30:
 		print('p =',p,end='')
 		try:
 			print(' perfect =',perfect.item())
-#		for large perfect numbers too big to display (length > 4300 digits)
+#		for large perfect numbers too big to display (length > 4300 digits),
+#		write to file instead
 		except:
 			print()
 			with open('p='+str(p)+'.txt', 'w') as file:
