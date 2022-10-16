@@ -69,6 +69,11 @@ while p<30:
 #	if psum is equal to the potenial perfect number, we have a match
 	if psum.item() == perfect.item():
 		print(perfect.item())
+#	comment out the line above and uncomment out the lines below for
+#	large perfect numbers too big to display (length > 4300 digits)
+#		print('p =',p)
+#		with open('p='+str(p)+'.txt', 'w') as file:
+#			file.write(perfect.item())
 
 print()
 _ = input('Press <Enter> to end program.')
