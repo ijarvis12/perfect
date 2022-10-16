@@ -31,7 +31,7 @@ else
 end
 
 -- check if maxn is sane
-if maxn <= 1 then
+if maxn < 2 then
     print("Bad input")
     print("Press <Enter> to end program")
     _ = io.read()
