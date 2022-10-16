@@ -34,39 +34,40 @@ p = 1
 while p<30:
 	p += 2
 
-#   LLT check
+#	LLT check
 	if LLT(p):
 		continue
 
+#	use gpu
 	with torch.cuda.device(cuda):
 
-#       summation var of divisors
+#		summation var of divisors
 		psum = torch.tensor(0, device=cuda)
 		
-#       the potential perfect number
+#		the potential perfect number
 ########perfect = 2**(p-1)*(2**(p)-1)
 		perfect = torch.tensor((1<<(2*p-1))-(1<<(p-1))).cuda()
 		
-#       the limit to search to
+#		the limit to search to
 		sqrtp = torch.tensor(int(sqrt(perfect))), device=cuda)
 		
-#       add up all the divisors into psum
+#		add up all the divisors into psum
 		psum += 1
 		for n in range(2,sqrtp.item()+1):
 			if perfect % n == 0:
 				psum += n
 				psum += perfect // n
 		
-#       send vars to cpu for further analysis
+#		send vars to cpu for further analysis
 		sqrtp.to(device=cpu)
 		psum.to(device=cpu)
 		perfect.to(device=cpu)
 		
-#   get rid of possible extra summation
+#	get rid of possible extra summation
 	if sqrtp.item()**2 == perfect.item():
 		psum -= sqrtp
 	
-#   if psum is equal to the potenial perfect number, we have a match
+#	if psum is equal to the potenial perfect number, we have a match
 	if psum.item() == perfect.item():
 		print(perfect.item())
 
