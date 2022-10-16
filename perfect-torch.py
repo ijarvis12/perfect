@@ -32,11 +32,11 @@ print(6)
 # find the perfect numbers
 p = 1
 while p<30:
-    p += 2
+	p += 2
 
 #   LLT check
-    if LLT(p):
-        continue
+	if LLT(p):
+		continue
 
 	with torch.cuda.device(cuda):
 
@@ -54,11 +54,11 @@ while p<30:
 		psum += 1
 		for n in range(2,sqrtp.item()+1):
 			if perfect % n == 0:
-			psum += n
-			psum += perfect // n
+				psum += n
+				psum += perfect // n
 		
 #       send vars to cpu for further analysis
-		sprtp.to(device=cpu)
+		sqrtp.to(device=cpu)
 		psum.to(device=cpu)
 		perfect.to(device=cpu)
 		
