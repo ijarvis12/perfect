@@ -42,17 +42,16 @@ while p<30:
 	with torch.cuda.device(cuda):
 
 #		summation var of divisors
-		psum = torch.tensor(0, device=cuda)
+		psum = torch.tensor(1, device=cuda)
 		
 #		the potential perfect number
 ########perfect = 2**(p-1)*(2**(p)-1)
 		perfect = torch.tensor((1<<(2*p-1))-(1<<(p-1))).cuda()
 		
 #		the limit to search to
-		sqrtp = torch.tensor(int(sqrt(perfect))), device=cuda)
+		sqrtp = torch.tensor(int(sqrt(perfect)), device=cuda)
 		
 #		add up all the divisors into psum
-		psum += 1
 		for n in range(2,sqrtp.item()+1):
 			if perfect % n == 0:
 				psum += n
