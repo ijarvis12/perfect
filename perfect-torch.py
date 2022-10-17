@@ -68,9 +68,9 @@ while p<32:
 	
 #	if psum is equal to the potenial perfect number, we have a match
 	if psum.item() == perfect.item():
-		print('p =',p,end=' :')
+		print('p =',p,end='')
 		try:
-			print(' perfect =',perfect.item())
+			print(' : perfect =',perfect.item())
 #		for large perfect numbers too big to display (length > 4300 digits),
 #		write to file instead
 		except:
