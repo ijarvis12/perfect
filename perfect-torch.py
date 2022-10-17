@@ -56,7 +56,8 @@ while p<32:
 		sqrtp.to(device=cuda)
 		
 #		add up all the divisors into psum
-		for n in range(2,sqrtp.item()+1):
+		end = sqrtp.item() + 1
+		for n in range(2,end):
 			if perfect % n == 0:
 				psum += n
 				psum += perfect // n
