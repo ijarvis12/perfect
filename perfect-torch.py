@@ -31,7 +31,7 @@ print('p = 2 : perfect =',6)
 
 # find the perfect numbers
 p = 1
-while p<30:
+while p<32:
 	p += 2
 
 #	LLT check
