@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 
-##                                     ##
-## program that finds perfect numbers  ##
-##                                     ##
+##                                         ##
+##    program that finds perfect numbers   ##
+##                                         ##
+## note: writes files in same directory if ##
+##       numbers get too big to display    ##
+##                                         ##
 
 import torch
 from math import sqrt
@@ -27,7 +30,7 @@ cpu = torch.device('cpu')
 cuda = torch.device('cuda')
 
 print("The perfect numbers:")
-print('p = 2 : perfect =',6)
+print('p = 2 : perfect = 6')
 
 # find the perfect numbers
 p = 1
