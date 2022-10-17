@@ -46,10 +46,14 @@ while p<32:
 		
 #		the potential perfect number
 ########perfect = 2**(p-1)*(2**(p)-1)
-		perfect = torch.tensor((1<<(2*p-1))-(1<<(p-1))).cuda()
+		perfect = torch.tensor((1<<(2*p-1))-(1<<(p-1)))
 		
 #		the limit to search to
-		sqrtp = torch.tensor(int(sqrt(perfect.item())), device=cuda)
+		sqrtp = torch.tensor(int(sqrt(perfect.item())))
+		
+#		send to gpu
+		perfect.to(device=cuda)
+		sqrtp.to(device=cuda)
 		
 #		add up all the divisors into psum
 		for n in range(2,sqrtp.item()+1):
