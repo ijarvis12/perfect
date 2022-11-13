@@ -23,7 +23,8 @@ perfect x m = do
   let end = toInteger (ceiling (sqrt (fromIntegral y)))
   let b = check y end
   let z = forLoop y [1] b end
-  y == z
+  let n = z - (end * (toInteger (fromEnum (end*end == z))))
+  y == n
 
 -- Lucas-Lehmer prime test for odd x > 2
 llt :: Integer -> Integer -> Integer -> Bool -> Bool
