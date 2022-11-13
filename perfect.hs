@@ -8,8 +8,7 @@ check :: Integer -> Integer -> Bool
 check y w = (mod y w) == 0
 
 forLoop :: Integer -> [Integer] -> Bool -> Integer -> Integer
-forloop y lst True 1 = toInteger (sum lst)
-forLoop y lst False 1 = toInteger (sum lst)
+forLoop y lst b 1 = toInteger (sum lst)
 forLoop y lst False w = do
     let b = check y (w-1)
     forLoop y lst b (w-1)
