@@ -5,9 +5,6 @@
 -- for bit shifting
 import Data.Bits
 
--- for 'when' stmts
-import Control.Monad
-
 check :: Integer -> Integer -> Bool
 check p w = (mod p w) == 0
 
@@ -21,29 +18,30 @@ forLoop p lst True w = do
     let b = check p (w-1)
     forLoop p (lst ++ [w,n]) b (w-1)
 
-perfect :: Int -> Integer -> IO ()
-perfect x m = do
-  let p = ((shiftL 1 (x-1)) :: Integer) * m
+prnt :: Integer -> Bool -> IO ()
+prnt _ False = return ()
+prnt p True = print p
+
+perfect :: Integer -> IO ()
+perfect p = do
   let end = toInteger (ceiling (sqrt (fromIntegral p)))
   let b = check p end
   let z = forLoop p [1] b end
   let n = z - (end * (toInteger (fromEnum (end*end == z))))
-  when (p == n) $ print p
+  prnt p (p==n)
 
 -- Lucas-Lehmer prime test for odd x > 2
-llt :: Integer -> Integer -> Integer -> Bool -> Bool
-llt s m 0 False = False
-llt s m end True = True
-llt s m end False = do
+llt :: Int -> Integer -> Integer -> Integer -> Bool -> IO () 
+llt x s m 0 False = perfect (((shiftL 1 (x-1)) :: Integer) * m)
+llt x s m end True = return ()
+llt x s m end False = do
     let y = ((s*s)-2) `mod` m
-    llt y m (end-1) (y==m)
+    llt x y m (end-1) (y==m)
 
 loop :: Int -> IO ()
 loop x = do
     let m = ((shiftL 1 x) :: Integer) - 1
-    let l = llt 4 m (m-2) False
-    when l $ loop (x+2)
-    perfect x m
+    llt x 4 m (m-2) False
     loop (x+2)
 
 main :: IO ()
