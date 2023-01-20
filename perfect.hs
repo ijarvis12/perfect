@@ -9,7 +9,7 @@ check :: Integer -> Integer -> Bool
 check p w = (mod p w) == 0
 
 forLoop :: Integer -> [Integer] -> Bool -> Integer -> Integer
-forLoop p lst b 1 = toInteger (sum lst)
+forLoop _ lst _ 1 = toInteger (sum lst)
 forLoop p lst False w = do
     let b = check p (w-1)
     forLoop p lst b (w-1)
@@ -32,8 +32,8 @@ perfect p = do
 
 -- Lucas-Lehmer prime test for odd x > 2
 llt :: Int -> Integer -> Integer -> Integer -> Bool -> IO () 
-llt x s m 0 False = perfect (((shiftL 1 (x-1)) :: Integer) * m)
-llt x s m end True = return ()
+llt x _ m 0 False = perfect (((shiftL 1 (x-1)) :: Integer) * m)
+llt _ _ _ _ True = return ()
 llt x s m end False = do
     let y = ((s*s)-2) `mod` m
     llt x y m (end-1) (y==m)
