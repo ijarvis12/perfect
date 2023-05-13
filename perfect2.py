@@ -16,10 +16,11 @@ print("")
 def LLT(p):
     s = 4
     M = (1<<p) - 1
-    for n in range(0,p-1):
-        s = ((s * s) - 2) % M;
-        if(s == 0):
+    while p > 2:
+        s = ((s * s) - 2) % M
+        if s == 0:
             return False
+        p -= 1
     return True
 
 print("The perfect numbers:")
