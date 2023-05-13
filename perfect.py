@@ -8,13 +8,11 @@
 def perfect(numprocs,proc,p,psum):
 #   variable start is the starting point
     start = int(sqrt(p))*proc//numprocs
-    if start < 2:
-        start = 2
+    start = max(start, 2)
 
 #   variable end is the ending point
     end = int(sqrt(p))*(proc+1)//numprocs
-    if end < 3:
-        end = 3
+    end = max(end, 3)
 
 #   add all divisors into return variable
     for i in range(start,end):
@@ -29,10 +27,11 @@ def perfect(numprocs,proc,p,psum):
 def LLT(n):
     s = 4
     M = (1<<n) - 1
-    for i in range(0,n-2):
-        s = ((s * s) - 2) % M;
-        if(s == 0):
+    while n > 2:
+        s = ((s * s) - 2) % M
+        if s == 0:
             return False
+        n -= 1
     return True
 
 
@@ -90,7 +89,7 @@ if __name__ == '__main__':
 
 #       last value
         if p % int(sqrt(p)) == 0:
-            psum.value += int(sqrt(p)) 
+            psum.value += int(sqrt(p))
 
 #       see if we have a perfect number
         if psum.value == p:
