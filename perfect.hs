@@ -10,9 +10,7 @@ check p w = (mod p w) == 0
 
 forLoop :: Integer -> [Integer] -> Bool -> Integer -> Integer
 forLoop _ lst _ 1 = toInteger (sum lst)
-forLoop p lst False w = do
-    let b = check p (w-1)
-    forLoop p lst b (w-1)
+forLoop p lst False w = do {let b = check p (w-1); forLoop p lst b (w-1)}
 forLoop p lst True w = do
     let n = div p w
     let b = check p (w-1)
