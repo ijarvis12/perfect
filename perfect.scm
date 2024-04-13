@@ -1,4 +1,4 @@
-#!/home/ijarvis12/.guix-profile/bin/guile -s
+#!/usr/bin/env guile -s
 !#
 
 ;; program that finds perfect numbers
