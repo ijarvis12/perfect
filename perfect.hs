@@ -10,7 +10,7 @@ check p w = (mod p w) == 0
 
 forLoop :: Integer -> [Integer] -> Bool -> Integer -> Integer
 forLoop _ lst _ 1 = toInteger (sum lst)
-forLoop p lst False w = do {let b = check p (w-1); forLoop p lst b (w-1)}
+forLoop p lst False w = forLoop p lst (check p (w-1)) (w-1)
 forLoop p lst True w = do
     let n = div p w
     let b = check p (w-1)
@@ -22,11 +22,11 @@ prnt p True = print p
 
 perfect :: Integer -> IO ()
 perfect p = do
-  let end = toInteger (ceiling (sqrt (fromIntegral p)))
-  let b = check p end
-  let z = forLoop p [1] b end
-  let n = z - (end * (toInteger (fromEnum (end*end == z))))
-  prnt p (p==n)
+    let end = toInteger (ceiling (sqrt (fromIntegral p)))
+    let b = check p end
+    let z = forLoop p [1] b end
+    let n = z - (end * (toInteger (fromEnum (end*end == z))))
+    prnt p (p==n)
 
 -- Lucas-Lehmer prime test for odd x > 2
 llt :: Int -> Integer -> Integer -> Integer -> Bool -> IO () 
@@ -44,5 +44,5 @@ loop x = do
 
 main :: IO ()
 main = do
-  putStrLn "Computing perfect numbers: \n6\n28"
-  loop 5
+    putStrLn "Computing perfect numbers: \n6\n28"
+    loop 5
