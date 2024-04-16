@@ -31,7 +31,7 @@
                 (set! M (- (expt 2 p) 1) )
                 (if (not (LLT p 4 M) ) (continue) )
                 (set! psum 1)
-                (set! perfect (* (expt 2 (- p 1)) (- (expt 2 p) 1) ) )
+                (set! perfect (* (expt 2 (- p 1)) M) )
                 (set! sqrtp (inexact->exact (ceiling (sqrt perfect)) ) )
                 (set! n 2)
                 (while (<= n sqrtp)
